@@ -35,7 +35,7 @@ class _ProdcutScreenBody extends StatelessWidget {
               children: [
                 //se soluciono el error de no poder acceder dado q puede volver un null ,situando un ? antes de picture dado ello se maneja el null safety de esa manera
                 ProductImage(
-                    imageUrl: productServicio.selectedproducto?.picture),
+                    imageUrl: productServicio.selectedproducto.picture),
                 Positioned(
                     top: 60,
                     left: 20,
