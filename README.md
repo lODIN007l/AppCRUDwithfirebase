@@ -1,16 +1,17 @@
 # productos_app
 
-A new Flutter project.
+Requerimientos : 
+  tener instalado dart y flutter 
+  Emulador de android o dispositivo fisico /IOS Emulador 
+  
+  
+ Ejecutar : 
+  flutter run y seleccionar el dispositivo y esperar a que se haga el build 
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+Aplicacion basica mediante uso de servicios REST ,teniendo como back a Firebase ,en donde emplearemos un CRUD de productos ingresados 
+ademas del uso de camara y acceso a la galeria para actualizacion de datos (Imagen del producto )
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#Wilson Lluilema 
