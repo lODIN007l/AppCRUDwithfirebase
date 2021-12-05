@@ -28,7 +28,7 @@ class ProductsService extends ChangeNotifier {
       this.products.add(tempProduct);
     });
 
-    //this.isLoading = false;
+    this.isLoading = false;
     notifyListeners();
 
     return this.products;
