@@ -15,7 +15,13 @@ class HomeScreen extends StatelessWidget {
         //genra los items de acuerdo a lo q tenga en la base
         itemCount: productoServicesss.products.length,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
-          onTap: () => Navigator.pushNamed(context, 'product'),
+          onTap: () {
+            //copia del producto para cargarlo en la pantalla de detalles
+            productoServicesss.selectedproducto =
+                productoServicesss.products[index].CopyP();
+
+            Navigator.pushNamed(context, 'product');
+          },
           //CARgar la data dinamicamente
           child: ProdctCard(
             producto: productoServicesss.products[index],

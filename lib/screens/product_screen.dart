@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:productos_app/providers/product_form_provider.dart';
+import 'package:productos_app/services/services.dart';
 import 'package:productos_app/ui/input_decoration.dart';
 import 'package:productos_app/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ProductScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final productServicio = Provider.of<ProductsService>(context);
+
+    return ChangeNotifierProvider(
+      create: (_) => ProductFormProviderr(productServicio.selectedproducto),
+      child: _ProdcutScreenBody(productServicio: productServicio),
+    );
+  }
+}
+
+class _ProdcutScreenBody extends StatelessWidget {
+  const _ProdcutScreenBody({
+    Key? key,
+    required this.productServicio,
+  }) : super(key: key);
+
+  final ProductsService productServicio;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +33,9 @@ class ProductScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                ProductImage(),
+                //se soluciono el error de no poder acceder dado q puede volver un null ,situando un ? antes de picture dado ello se maneja el null safety de esa manera
+                ProductImage(
+                    imageUrl: productServicio.selectedproducto?.picture),
                 Positioned(
                     top: 60,
                     left: 20,
@@ -53,6 +77,8 @@ class ProductScreen extends StatelessWidget {
 class _ProductForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final productForm = Provider.of<ProductFormProviderr>(context);
+    final product = productForm.product;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
@@ -66,6 +92,13 @@ class _ProductForm extends StatelessWidget {
               height: 10,
             ),
             TextFormField(
+              initialValue: product.name,
+              onChanged: (value) => product.name = value,
+              validator: (value) {
+                if (value == null || value.length < 1) {
+                  return 'El nombre es obligatorio';
+                }
+              },
               decoration: InputDecorationss.logindecoracion(
                   hintText: 'Nombre del producto', labelText: 'Nombre:'),
             ),
@@ -73,6 +106,16 @@ class _ProductForm extends StatelessWidget {
               height: 30,
             ),
             TextFormField(
+              initialValue: '${product.price}',
+              onChanged: (value) {
+                //parsear el precio y validacion incluida
+                if (double.tryParse(value) == null) {
+                  product.price = 0;
+                } else {
+                  product.price = double.parse(value);
+                }
+              },
+
               //cambiar el tipo de teclado
               keyboardType: TextInputType.number,
               decoration: InputDecorationss.logindecoracion(
@@ -82,7 +125,7 @@ class _ProductForm extends StatelessWidget {
               height: 30,
             ),
             SwitchListTile(
-              value: true,
+              value: product.available,
               onChanged: (value) {},
               title: Text('Disponible'),
               activeColor: Colors.indigo,

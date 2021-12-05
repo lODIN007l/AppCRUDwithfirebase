@@ -10,6 +10,9 @@ class ProductsService extends ChangeNotifier {
   final List<Product> products = [];
   bool isLoading = true;
 
+  //producto seleccionado
+  late Product selectedproducto;
+
   ProductsService() {
     this.loadProducts();
   }
