@@ -10,6 +10,7 @@ class ProductsService extends ChangeNotifier {
   final List<Product> products = [];
   bool isLoading = true;
 
+  bool isSaving = false;
   //producto seleccionado
   late Product selectedproducto;
 
@@ -36,6 +37,52 @@ class ProductsService extends ChangeNotifier {
 
     return this.products;
     //print(this.products[0].name);
+  }
+
+  Future SaveORcreateProducr(Product product) async {
+    isSaving = true;
+    notifyListeners();
+
+    if (product.id == null) {
+      //es necesario crear
+      await this.CreateProduc(product);
+    } else {
+      //actualizar
+      await this.updateProduc(product);
+    }
+
+    isSaving = false;
+    notifyListeners();
+  }
+
+  Future<String> updateProduc(Product product) async {
+    //enviamos mediante el id los nuevos datos
+    final url = Uri.https(_baseUrl, 'products/${product.id}.json');
+    //y enviamos mediante el "put"
+    final resp = await http.put(url, body: product.toJson());
+
+    final decodeData = resp.body;
+
+    //TODO ACTUALIZAR EL LISTADO DE PRODUCTOS en base a la lista
+    final index =
+        this.products.indexWhere((element) => element.id == product.id);
+    this.products[index] = product;
+
+    print(decodeData);
+    return product.id!;
+  }
+
+  Future<String> CreateProduc(Product product) async {
+    //enviamos mediante el id los nuevos datos
+    final url = Uri.https(_baseUrl, 'products.json');
+    //y enviamos mediante el "put"
+    final resp = await http.post(url, body: product.toJson());
+    //convertimos el resp.body en un mapa para tomar el name para id
+    final decodeData = json.decode(resp.body);
+    product.id = decodeData['name'];
+    this.products.add(product);
+
+    return product.id!;
   }
 
   //TODO hacer fetch de productos
