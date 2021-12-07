@@ -57,12 +57,16 @@ class _ProdcutScreenBody extends StatelessWidget {
                       onPressed: () async {
                         final picker = ImagePicker();
                         final PickedFile? pickerFILE = await picker.getImage(
-                            source: ImageSource.camera, imageQuality: 100);
+                            //cambiar entre camara o galeria
+                            source: ImageSource.camera,
+                            imageQuality: 100);
 
                         if (pickerFILE == null) {
                           print('nose selecciono nada ');
                         } else {
-                          print('se eligio ${pickerFILE.path}');
+                          //print('se eligio ${pickerFILE.path}');
+                          productServicio
+                              .updateSelectedProductImage(pickerFILE.path);
                         }
                       },
                       icon: Icon(
@@ -81,11 +85,21 @@ class _ProdcutScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          if (!productForm.isValidForm()) return;
-          productServicio.SaveORcreateProducr(productForm.product);
-        },
-        child: Icon(Icons.save_outlined),
+        onPressed: productServicio.isSaving
+            ? null
+            : () async {
+                if (!productForm.isValidForm()) return;
+                final String? imageURL = await productServicio.uploadImage();
+
+                if (imageURL != null) productForm.product.picture = imageURL;
+
+                productServicio.SaveORcreateProducr(productForm.product);
+              },
+        child: productServicio.isSaving
+            ? CircularProgressIndicator(
+                color: Colors.white,
+              )
+            : Icon(Icons.save_outlined),
       ),
     );
   }
