@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:productos_app/models/products.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ProductsService extends ChangeNotifier {
   final String _baseUrl = 'flutter-varios-aa9ee-default-rtdb.firebaseio.com';
 
   final List<Product> products = [];
+  final storage = FlutterSecureStorage();
 
   File? newImage;
 
@@ -26,7 +28,8 @@ class ProductsService extends ChangeNotifier {
     this.isLoading = true;
     notifyListeners();
 
-    final url = Uri.https(_baseUrl, 'products.json');
+    final url = Uri.https(_baseUrl, 'products.json',
+        {'auth': await storage.read(key: 'token') ?? ''});
     final resp = await http.get(url);
     final Map<String, dynamic> productosMap = json.decode(resp.body);
     //print(productosMap);

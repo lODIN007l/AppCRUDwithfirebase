@@ -9,9 +9,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productoServicesss = Provider.of<ProductsService>(context);
+    final authS = Provider.of<AuthService>(context, listen: false);
+
     if (productoServicesss.isLoading) return LoadingScreen();
     return Scaffold(
-      appBar: AppBar(title: Text('productos')),
+      appBar: AppBar(
+        title: Text('productos'),
+        leading: IconButton(
+          onPressed: () async {
+            await authS.logout();
+            Navigator.pushReplacementNamed(context, 'login');
+          },
+          icon: Icon(Icons.login_outlined),
+        ),
+      ),
       body: ListView.builder(
         //genra los items de acuerdo a lo q tenga en la base
         itemCount: productoServicesss.products.length,
