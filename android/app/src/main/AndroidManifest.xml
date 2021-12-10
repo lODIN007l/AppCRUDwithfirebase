@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.productos_app">
+    package="com.odinwll.productos_app">
    <application
-        android:label="productos_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Productos-CRUD"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

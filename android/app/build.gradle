@@ -43,12 +43,12 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.productos_app"
+        applicationId "com.odinwll.productos_app"
         //para ocupar el image_picker cambiara la version 18
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 1
+        versionName "1.0.0"
     }
 
     buildTypes {
