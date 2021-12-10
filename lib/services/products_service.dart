@@ -64,7 +64,8 @@ class ProductsService extends ChangeNotifier {
 
   Future<String> updateProduc(Product product) async {
     //enviamos mediante el id los nuevos datos
-    final url = Uri.https(_baseUrl, 'products/${product.id}.json');
+    final url = Uri.https(_baseUrl, 'products/${product.id}.json',
+        {'auth': await storage.read(key: 'token') ?? ''});
     //y enviamos mediante el "put"
     final resp = await http.put(url, body: product.toJson());
 
@@ -81,7 +82,8 @@ class ProductsService extends ChangeNotifier {
 
   Future<String> CreateProduc(Product product) async {
     //enviamos mediante el id los nuevos datos
-    final url = Uri.https(_baseUrl, 'products.json');
+    final url = Uri.https(_baseUrl, 'products.json',
+        {'auth': await storage.read(key: 'token') ?? ''});
     //y enviamos mediante el "put"
     final resp = await http.post(url, body: product.toJson());
     //convertimos el resp.body en un mapa para tomar el name para id
